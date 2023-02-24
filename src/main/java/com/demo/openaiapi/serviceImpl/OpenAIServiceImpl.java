@@ -1,4 +1,4 @@
-package serviceImpl;
+package com.demo.openaiapi.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -8,9 +8,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import service.OpenAIService;
+import com.demo.openaiapi.service.OpenAIService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -32,14 +33,19 @@ public class OpenAIServiceImpl implements OpenAIService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(apiKey);
 
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("prompt", message);
-        data.put("model", "text-davince-002");
-        data.put("temperature","0.5");
+        data.put("model", "davinci-codex");
+        data.put("temperature", 0.5);
 
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(data, headers);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(data, headers);
         ResponseEntity<Map> response = restTemplate.postForEntity(endpoint +"completions", request, Map.class);
 
-        return (String) response.getBody().get("choices");
+        List<Map<String, Object>> choisesList = (List<Map<String, Object>>) response.getBody().get("choices");
+        StringBuilder choicesBuilder = new StringBuilder();
+        for (Map<String, Object> choice : choisesList){
+            choicesBuilder.append(choice.get("text"));
+        }
+        return choicesBuilder.toString();
     }
 }

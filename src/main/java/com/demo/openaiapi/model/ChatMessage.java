@@ -1,4 +1,4 @@
-package model;
+package com.demo.openaiapi.model;
 
 public class ChatMessage {
     private String username;

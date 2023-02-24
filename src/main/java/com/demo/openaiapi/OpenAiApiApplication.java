@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OpenAiApiApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(OpenAiApiApplication.class, args);
     }
 
